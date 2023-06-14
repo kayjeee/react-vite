@@ -1,32 +1,19 @@
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
 import InputTodo from '@/components/InputTodo';
 import TodosList from '@/components/TodosList';
+import { TodosProvider } from '@/context/TodosContext';
 
 const TodosLogic = () => {
-    const todos = [
-      {
-        id: 1,
-        title: 'Setup development environment',
-        completed: true,
-      },
-      {
-        id: 2,
-        title: 'Develop website and add content',
-        completed: false,
-      },
-      {
-        id: 3,
-        title: 'Deploy to live server',
-        completed: false,
-      },
-    ];
-    return (
-      
-        <div>
+  return (
+    <TodosProvider>
+      {/* Render the InputTodo component for adding new todos */}
       <InputTodo />
-      <TodosList todosProps={todos} />
-    </div>
-       
-      );
-  };
-  export default TodosLogic;
-  
+
+      {/* Render the TodosList component for displaying and managing todos */}
+      <TodosList />
+    </TodosProvider>
+  );
+};
+
+export default TodosLogic;
