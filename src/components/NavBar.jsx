@@ -1,44 +1,22 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuthContext } from '@/context/AuthContext';
 
-import { MdClose } from 'react-icons/md';
-import { FiMenu } from 'react-icons/fi';
-
-const links = [
-  { path: '/', text: 'Home' },
-  { path: 'about', text: 'About' },
-  { path: 'profile', text: 'Profile' },
-  { path: 'login', text: 'Login' },
-];
 const Navbar = () => {
-  const [navbarOpen, setNavbarOpen] = useState(false);
-  const { user, logout } = useAuthContext();
-
-  const ref = useRef();
-
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const [navbarOpen, setNavbarOpen] = useState(false); // State to track whether the navbar is open or closed
+  const ref = useRef(); // Reference to the navbar element
 
   useEffect(() => {
-    const handler = (event) => {
-      if (
-        navbarOpen &&
-        ref.current &&
-        !ref.current.contains(event.target)
-      ) {
+    // Event handler to close the navbar when clicking outside
+    const handleClickOutside = (event) => {
+      if (navbarOpen && ref.current && !ref.current.contains(event.target)) {
         setNavbarOpen(false);
       }
     };
-    document.addEventListener('mousedown', handler);
+
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
-      // Cleanup the event listener
-      document.removeEventListener('mousedown', handler);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [navbarOpen]);
 
@@ -49,71 +27,25 @@ const Navbar = () => {
           className="toggle"
           onClick={() => setNavbarOpen((prev) => !prev)}
         >
-          {navbarOpen ? (
-            <MdClose style={{ width: '32px', height: '32px' }} />
-          ) : (
-            <FiMenu
-              style={{
-                width: '32px',
-                height: '32px',
-              }}
-            />
-          )}
+          {navbarOpen ? 'Close' : 'Open'}
         </button>
         <ul className={`menu-nav${navbarOpen ? ' show-menu' : ''}`}>
-          {links.map((link) => {
-            return (
-              <React.Fragment key={link.text}>
-                {link.path === 'login' ? (
-                  !user && (
-                    <li>
-                      <NavLink
-                        to={link.path}
-                        onClick={() => setNavbarOpen(false)}
-                      >
-                        {link.text}
-                      </NavLink>
-                    </li>
-                  )
-                ) : link.path === 'profile' ? (
-                  user && (
-                    <li>
-                      <NavLink
-                        to={link.path}
-                        onClick={() => setNavbarOpen(false)}
-                      >
-                        {link.text}
-                      </NavLink>
-                    </li>
-                  )
-                ) : (
-                  <li>
-                    <NavLink
-                      to={link.path}
-                      onClick={() => setNavbarOpen(false)}
-                    >
-                      {link.text}
-                    </NavLink>
-                  </li>
-                )}
-              </React.Fragment>
-            );
-          })}
-          {!user && (
-            <li className="log-in">
-              <span>Log in to edit to-dos</span>
-            </li>
-          )}
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/about">About</a>
+          </li>
+          <li>
+            <a href="/profile">Profile</a>
+          </li>
+          <li>
+            <a href="/login">Login</a>
+          </li>
         </ul>
       </nav>
-
-      {user && (
-        <div className="logout">
-          <p>{user}</p>
-          {<button onClick={handleLogout}>Logout</button>}
-        </div>
-      )}
     </>
   );
 };
+
 export default Navbar;

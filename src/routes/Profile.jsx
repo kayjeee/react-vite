@@ -4,6 +4,7 @@ import styles from '@/styles/Profile.module.css';
 
 const Profile = () => {
   const { user } = useAuthContext();
+
   return (
     <div>
       <Header>
