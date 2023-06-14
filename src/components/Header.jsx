@@ -1,10 +1,20 @@
-const Header = () => {
-    return (
-      <header>
-        <h1>todos</h1>
-        <p>Items will persist in the browser local storage</p>
-      </header>
-    );
+/* eslint-disable react/prop-types */
+import styles from '@/styles/Header.module.css';
+
+const Header = ({ children }) => {
+  // Inline styles for the header
+  const headerStyles = {
+    padding: '20px 0',
+    lineHeight: '1.5em',
+    color: '#aeadad',
+    textAlign: 'center',
   };
-  export default Header;
-  
+
+  return (
+    <header style={headerStyles} className={styles.header}>
+      {children}
+    </header>
+  );
+};
+
+export default Header;
